@@ -7,7 +7,10 @@
 <p>Hey</p>
 
 <div id="map" style="width: 1280px; height: 600px"></div>
- 
+<script
+src="https://code.jquery.com/jquery-3.4.1.js"
+integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+crossorigin="anonymous"></script>
 <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
@@ -29,14 +32,18 @@
         document.getElementById("address-submit").addEventListener("click", async (evt) => {
           evt.preventDefault();
           const points = getUserAddress();
-    
-         const start = await here.geocode(points[0]);
-         const end = await here.geocode(points[1]);
-         console.log(start.Latitude)
-         here.dropMarker(start.Latitude, start.Longitude);
-         here.dropMarker(end.Latitude, end.Longitude);
-         here.drawRoute(start, end);
-    })
+          
+          const start = await here.geocode(points[0]);
+          const end = await here.geocode(points[1]);
+          console.log(start.Latitude)
+          $.post("/charging",{"latitude":end.Latitude,
+                              "longitude":end.Longitude
+                              }
+          )
+          here.dropMarker(start.Latitude, start.Longitude);
+          here.dropMarker(end.Latitude, end.Longitude);
+          here.drawRoute(start, end);
+    }) 
     }
     start();
 </script>

@@ -82,8 +82,6 @@ function getUserAddress(evt){
     // evt.preventDefault()
     const start = document.getElementById("start").value;
     const end = document.getElementById("end").value;
-    
-    
     // console.log(address)
     return [start,end]
  };
