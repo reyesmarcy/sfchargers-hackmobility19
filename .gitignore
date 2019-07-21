@@ -2,3 +2,4 @@ env/
 secrets.sh
 .DS_Store
 secrets.js
+__pycache__/

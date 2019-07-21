@@ -22,12 +22,12 @@ crossorigin="anonymous"></script>
   start <input type="text" id="start">
   end <input type="text" id="end">
   <input type="submit" id="address-submit">
+  <button id="station">Get Charging Stations</button>
 </form>
 
 <script>
+  const here = new HereMap(HERE_APP_ID, HERE_APP_CODE, document.getElementById("map"));
     const start = async () => {
-        
-        const here = new HereMap(HERE_APP_ID, HERE_APP_CODE, document.getElementById("map"));
       
         document.getElementById("address-submit").addEventListener("click", async (evt) => {
           evt.preventDefault();
@@ -36,15 +36,39 @@ crossorigin="anonymous"></script>
           const start = await here.geocode(points[0]);
           const end = await here.geocode(points[1]);
           console.log(start.Latitude)
-          $.post("/charging",{"latitude":end.Latitude,
-                              "longitude":end.Longitude
-                              }
-          )
+          // $.post("/charging",{"latitude":end.Latitude,
+          //                     "longitude":end.Longitude
+          //                     }
+          // )
           here.dropMarker(start.Latitude, start.Longitude);
           here.dropMarker(end.Latitude, end.Longitude);
           here.drawRoute(start, end);
+
     }) 
     }
     start();
+
+    document.getElementById("station").addEventListener("click", async (evt)=> {
+      evt.preventDefault();
+      const points = getUserAddress();
+      console.log(points)
+      const start = await here.geocode(points[0]);
+      const end = await here.geocode(points[1]);
+      console.log(end.Latitude)
+      $.get("/charging", {"latitude":end.Latitude,
+                              "longitude":end.Longitude
+                              }, (data)=>{
+        console.log(typeof data)
+
+        
+        for (let k in data ) {
+          console.log(k)
+          console.log("i am the value" + data[k])
+          here.dropMarker(k, data[k])
+        }
+       
+      })
+    }
+    )
 </script>
 {% endblock %}
