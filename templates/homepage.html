@@ -6,40 +6,38 @@
 
 <p>Hey</p>
 
-
-
 <div id="map" style="width: 1280px; height: 600px"></div>
+ 
 <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
-<script src="here-map.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/js/main.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/js/secrets.js" type="text/javascript" charset="utf-8"></script>
+
 
 <form>
   start <input type="text" id="start">
   end <input type="text" id="end">
   <input type="submit" id="address-submit">
 </form>
-<script>
 
-    var here = new HereMap(HERE_APP_ID, HERE_APP_CODE, document.getElementById("map"));
-   
-    var start = async () => {
-        var tracy = await here.geocode("Tracy, CA");
-        var modesto = await here.geocode("Modesto, CA");
+<script>
+    const start = async () => {
+        
+        const here = new HereMap(HERE_APP_ID, HERE_APP_CODE, document.getElementById("map"));
       
+        document.getElementById("address-submit").addEventListener("click", async (evt) => {
+          evt.preventDefault();
+          const points = getUserAddress();
+    
+         const start = await here.geocode(points[0]);
+         const end = await here.geocode(points[1]);
+         console.log(start.Latitude)
+         here.dropMarker(start.Latitude, start.Longitude);
+         here.dropMarker(end.Latitude, end.Longitude);
+         here.drawRoute(start, end);
+    })
     }
     start();
-    document.getElementById("address-submit").addEventListener("click", async (evt) => {
-    evt.preventDefault();
-    const points = getUserAddress();
-    
-    const start = await here.geocode(points[0]);
-    const end = await here.geocode(points[1]);
-    console.log(start.Latitude)
-    here.dropMarker(start.Latitude, start.Longitude);
-    here.dropMarker(end.Latitude, end.Longitude);
-    here.drawRoute(start, end);
-
-    })
 </script>
 {% endblock %}
