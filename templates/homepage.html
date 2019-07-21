@@ -25,6 +25,9 @@ crossorigin="anonymous"></script>
   <button id="station">Get Charging Stations</button>
 </form>
 
+<div>Range Left {{ range_left }}</div>
+<div>Percent Remaining {{ percentRemaining }}</div>
+
 <script>
   const here = new HereMap(HERE_APP_ID, HERE_APP_CODE, document.getElementById("map"));
     const start = async () => {
